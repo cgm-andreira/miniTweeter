@@ -22,21 +22,25 @@ public class LoginController {
 	@Autowired LoginValidator loginValidator;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login(HttpServletRequest req, @ModelAttribute("login") Login login) {
+	public ModelAndView login() {
+		ModelAndView mav = new ModelAndView("login");
+		return mav;
+	}
+	@RequestMapping(value = "/processLogin", method = RequestMethod.POST)
+	public ModelAndView processLogin(HttpServletRequest req, @ModelAttribute("login") Login login) {
 		ModelAndView mav = null;
-		if(login == null) {
-			mav = new ModelAndView("login");
-			return mav;
+		User user = loginValidator.validateUser(login);
+		if(user != null) {
+			mav = new ModelAndView("home");
+			
+			req.getSession().setAttribute("userName", user.getName());
+			mav.addObject("userName", user.getName());
+			mav.addObject("messages", dbManager.getMessages(user));
+			
 		} else {
-			User user = loginValidator.validateUser(login);
-			if(user != null) {
-				httpSession.setAttribute("user", user);
-				mav = new ModelAndView("home");
-			} else {
-				String message = "Username or password error, please try again!";
-				mav = new ModelAndView("login");
-				mav.addObject("message", message);
-			}
+			String message = "Username or password error, please try again!";
+			mav = new ModelAndView("login");
+			mav.addObject("message", message);
 		}
 		return mav;
 	}

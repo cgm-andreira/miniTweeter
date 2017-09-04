@@ -8,7 +8,7 @@
 	<title>Home</title>
 </head>
 <body>
-	<% String user=request.getParameter("userName"); %>
+	<% String user = (String) request.getSession().getAttribute("userName"); %>
 	<% if(user == null || user == ""){ %>
 		<h1>Hello, to see and post messages, please <a href = "login">login</a>!</h1>  
 	<% } else { %>
