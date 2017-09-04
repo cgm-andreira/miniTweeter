@@ -20,6 +20,8 @@ public class DBManager {
 		user.addMessage("Who has a joint?");
 		User user1 = user;
 		
+		System.out.println(user.getMessages());
+		
 		users.put(user.getUsername(), user);
 		
 		user = new User();
@@ -49,6 +51,9 @@ public class DBManager {
 		User currentUser = user;
 		output.addAll(currentUser.getMessages());
 		ArrayList<User> following = currentUser.getFollowing();
+		
+		System.out.println(user.getMessages());
+		
 		for(User followedUser : following) {
 			output.addAll(followedUser.getMessages());
 		}

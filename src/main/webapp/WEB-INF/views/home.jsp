@@ -2,7 +2,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page session="false" %>
+<%@ page session="true" %>
 <html>
 <head>
 	<title>Home</title>
@@ -32,8 +32,10 @@
 	 	</table>
 	 	</form:form>
 	 <h3>Messages: </h3>
+	 
 	 <c:forEach items="${messages}" var="message">
 		<div style="border: 1px solid green; margin: 0px 20px;">
+			<h5>Something written!</h5>
 			<h4>${message.message}</h4>
 			<h4>${message.user.name}</h4>
         </div>

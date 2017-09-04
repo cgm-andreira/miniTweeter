@@ -34,6 +34,7 @@ public class LoginController {
 			mav = new ModelAndView("home");
 			
 			req.getSession().setAttribute("userName", user.getName());
+			req.getSession().setAttribute("user", user);
 			mav.addObject("userName", user.getName());
 			mav.addObject("messages", dbManager.getMessages(user));
 			

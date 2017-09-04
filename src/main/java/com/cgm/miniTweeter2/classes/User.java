@@ -44,6 +44,7 @@ public class User {
 		Message newMessage = new Message();
 		newMessage.setMessage(message);
 		newMessage.setUser(this);
+		messages.add(newMessage);
 	}
 	public void addFriends(User user) {
 		friends.add(user);
