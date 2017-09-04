@@ -18,6 +18,7 @@ public class DBManager {
 		user.addMessage("Hello world of miniTweeter");
 		user.addMessage("This is my second miniTweet!");
 		user.addMessage("Who has a joint?");
+		User user1 = user;
 		
 		users.put(user.getUsername(), user);
 		
@@ -27,6 +28,12 @@ public class DBManager {
 		user.setPassword("admin");
 		user.addMessage("This is mah first tweet");
 		user.addMessage("Does anyone know where I left my phone? - Message posted from AndroidOS");
+		
+		user.addFollowing(user1);
+		user1.addFollowing(user);
+		
+		user.addFriends(user1);
+		user.addFriends(user);
 		
 		users.put(user.getUsername(), user);
 		

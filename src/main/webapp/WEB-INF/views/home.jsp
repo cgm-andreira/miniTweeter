@@ -32,7 +32,7 @@
 	 	</table>
 	 	</form:form>
 	 <h3>Messages: </h3>
-	 <c:forEach items="${messageList}" var="message">
+	 <c:forEach items="${messages}" var="message">
 		<div style="border: 1px solid green; margin: 0px 20px;">
 			<h4>${message.message}</h4>
 			<h4>${message.user.name}</h4>
