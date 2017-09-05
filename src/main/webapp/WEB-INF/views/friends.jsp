@@ -5,17 +5,13 @@
 <%@ page session="true" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>${user.name}</title>
 </head>
 <body>
-	<% 
-		String user = (String) request.getSession().getAttribute("userName");
-	%>
+	<% String user = (String) request.getSession().getAttribute("userName"); %>
 	<% if(user == null || user == ""){ %>
 		<h1>Hello, to see and post messages, please <a href = "login">login</a>!</h1>  
 	<% } else { %>
-		<h1>Hello, ${userName}!</h1>
-		
 		<ul style="list-style: none; display: block">
 			<li style="float:left; display: inline-block">
 				<a href="/miniTweeter2" style="display: inline-block; padding: 5px; background-color: #F0F0F0">
@@ -40,32 +36,13 @@
 		</ul>
 		<br/>
 		
-		<form:form id="newMessageForm" modelAttribute="message" action="postMessage" method="post">
-		<table >
-		     <tr>
-		         <td>
-		             <label path="message">Post-a-tweet: </label>
-		         </td>
-		         <td>
-		             <input path="message" name="message" id="message" />
-		         </td>
-		     </tr>
-		     <tr>
-		         <td></td>
-		         <td align="left">
-		             <button type="submit" id="post" name="post">Post it!</button>
-		         </td>
-		     </tr>
-	 	</table>
-	 	</form:form>
-	 <h3>Messages: </h3>
-	 
-	 <c:forEach items="${messages}" var="message">
-		<div style="border: 1px solid green; margin: 20px 10px; padding-left: 15px">
-		<h4 style="color:dark-gray; margin-top: 10px">${message.user.name} wrote:</h4>
-			<h4>${message.message}</h4>
-        </div>
-	</c:forEach>
+		<h3>Friends: </h3>
+	 	<c:forEach items="${friends}" var="friend">
+			<div style="border: 1px solid green; margin: 20px 10px; padding-left: 15px">
+				<h4><a href="user/${friend.username}">${friend.name}</a></h4>
+	        </div>
+		</c:forEach>
+		
 	<% } %>
 
 	

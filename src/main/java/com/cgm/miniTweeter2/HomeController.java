@@ -3,7 +3,6 @@ package com.cgm.miniTweeter2;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,13 +17,12 @@ import com.cgm.miniTweeter2.classes.User;
 
 @Controller
 public class HomeController {
-	@Autowired HttpSession httpSession;
 	@Autowired DBManager dbManager;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest req, Locale locale, Model model) {
 		ModelAndView mav = new ModelAndView("home");
-		User currentUser = (User) httpSession.getAttribute("user");
+		User currentUser = (User) req.getSession().getAttribute("user");
 		if(currentUser != null) {
 			mav.addObject("userName", currentUser.getName());
 			mav.addObject("messages", dbManager.getMessages(currentUser));
@@ -34,8 +32,15 @@ public class HomeController {
 	
 	@RequestMapping(value = "/postMessage", method = RequestMethod.POST)
 	public ModelAndView postMessage(HttpServletRequest req, @ModelAttribute("message") String message) {
-		ModelAndView mav = new ModelAndView("home");
+		ModelAndView mav;
 		User currentUser = (User) req.getSession().getAttribute("user");
+		
+		if (currentUser == null) {
+			mav = new ModelAndView("redirect:/");
+			return mav;
+		}
+		
+		mav = new ModelAndView("home");
 		currentUser.addMessage(message);
 		
 		mav.getModel().put("messages", dbManager.getMessages(currentUser));

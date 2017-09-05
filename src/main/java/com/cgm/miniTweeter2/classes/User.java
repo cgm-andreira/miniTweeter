@@ -9,12 +9,10 @@ public class User {
 	private String about;
 	private ArrayList<Message> messages;
 	private ArrayList<User> friends;
-	private ArrayList<User> following;
 	
 	public User() {
 		messages = new ArrayList<Message>();
 		friends = new ArrayList<User>();
-		following = new ArrayList<User>();
 	}
 	
 	public String getUsername() {
@@ -53,19 +51,16 @@ public class User {
 		newMessage.setUser(this);
 		messages.add(newMessage);
 	}
-	public void addFriends(User user) {
+	public void addFriend(User user) {
 		friends.add(user);
+	}
+	public void removeFriend(User user) {
+		friends.remove(user);
 	}
 	public ArrayList<User> getFriends(){
 		return friends;
 	}
 	public ArrayList<User> getFollowing(){
-		return following;
-	}
-	public void addFollowing(User user) {
-		following.add(user);
-	}
-	public void removeFollowing(User user) {
-		following.remove(user);
+		return friends;
 	}
 }

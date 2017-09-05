@@ -15,6 +15,7 @@ public class DBManager {
 		user.setName("Bob Marley");
 		user.setUsername("spiderman");
 		user.setPassword("best");
+		user.setAbout("I am Robert Nesta Marley. OM was a Jamaican singer-songwriter, musician and guitarist who achieved international fame and acclaim, blending mostly reggae, ska and rocksteady in his compositions.");
 		user.addMessage("Hello world of miniTweeter");
 		user.addMessage("This is my second miniTweet!");
 		user.addMessage("Who has a joint?");
@@ -28,14 +29,22 @@ public class DBManager {
 		user.setName("Jeff Smartypants");
 		user.setUsername("jeffy");
 		user.setPassword("admin");
+		user.setAbout("Hi, I am new to the internets. I run around the nets looking at photos of cats.");
 		user.addMessage("This is mah first tweet");
 		user.addMessage("Does anyone know where I left my phone? - Message posted from AndroidOS");
 		
-		user.addFollowing(user1);
-		user1.addFollowing(user);
+		user.addFriend(user1);
+		user1.addFriend(user);
 		
-		user.addFriends(user1);
-		user.addFriends(user);
+		users.put(user.getUsername(), user);
+		
+		user = new User();
+		user.setName("Johnny B");
+		user.setUsername("admin");
+		user.setPassword("admin");
+		user.setAbout("I am the website admin.");
+		user.addMessage("I am the ADMIN!");
+		user.addMessage("Ini mini miny mo..");
 		
 		users.put(user.getUsername(), user);
 		

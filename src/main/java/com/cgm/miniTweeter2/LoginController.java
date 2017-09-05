@@ -34,6 +34,7 @@ public class LoginController {
 			mav = new ModelAndView("home");
 			
 			req.getSession().setAttribute("userName", user.getName());
+			req.getSession().setAttribute("userLinkAddress", user.getUsername());
 			req.getSession().setAttribute("user", user);
 			mav.addObject("userName", user.getName());
 			mav.addObject("messages", dbManager.getMessages(user));
@@ -44,5 +45,13 @@ public class LoginController {
 			mav.addObject("message", message);
 		}
 		return mav;
+	}
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest req) {
+		req.getSession().setAttribute("user", null);
+		req.getSession().setAttribute("userName", null);
+		req.getSession().setAttribute("userLinkAddress", null);
+		req.getSession().invalidate();
+		return "redirect:/";
 	}
 }
