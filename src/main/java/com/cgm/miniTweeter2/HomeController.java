@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cgm.miniTweeter2.classes.DBManager;
-import com.cgm.miniTweeter2.classes.Login;
 import com.cgm.miniTweeter2.classes.User;
 
 @Controller

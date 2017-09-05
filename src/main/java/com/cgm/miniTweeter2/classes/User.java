@@ -6,6 +6,7 @@ public class User {
 	private String username;
 	private String password;
 	private String name;
+	private String about;
 	private ArrayList<Message> messages;
 	private ArrayList<User> friends;
 	private ArrayList<User> following;
@@ -33,6 +34,12 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getAbout() {
+		return this.about;
+	}
+	public void setAbout(String about) {
+		this.about = about;
 	}
 	public ArrayList<Message> getMessages(){
 		return messages;

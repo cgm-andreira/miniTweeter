@@ -34,10 +34,9 @@
 	 <h3>Messages: </h3>
 	 
 	 <c:forEach items="${messages}" var="message">
-		<div style="border: 1px solid green; margin: 0px 20px;">
-			<h5>Something written!</h5>
+		<div style="border: 1px solid green; margin: 20px 10px; padding-left: 15px">
+		<h4 style="color:dark-gray; margin-top: 10px">${message.user.name} wrote:</h4>
 			<h4>${message.message}</h4>
-			<h4>${message.user.name}</h4>
         </div>
 	</c:forEach>
 	<% } %>
