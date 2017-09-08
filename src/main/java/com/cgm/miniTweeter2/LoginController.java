@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cgm.miniTweeter2.classes.DBManager;
-import com.cgm.miniTweeter2.classes.Login;
-import com.cgm.miniTweeter2.classes.LoginValidator;
-import com.cgm.miniTweeter2.classes.User;
+import com.cgm.miniTweeter2.logic.DBManager;
+import com.cgm.miniTweeter2.logic.Login;
+import com.cgm.miniTweeter2.logic.LoginValidator;
+import com.cgm.miniTweeter2.logic.User;
 
 @Controller
 public class LoginController {

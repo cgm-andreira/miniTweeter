@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cgm.miniTweeter2.classes.DBManager;
-import com.cgm.miniTweeter2.classes.User;
+import com.cgm.miniTweeter2.logic.DBManager;
+import com.cgm.miniTweeter2.logic.User;
 
 @Controller
 public class UserController {
@@ -20,6 +20,8 @@ public class UserController {
 	public ModelAndView userProfile(HttpServletRequest req, @PathVariable String username) {
 		ModelAndView mav = new ModelAndView("user");
 		User currentUser = (User) req.getSession().getAttribute("user");
+		User user = dbManager.getUser(username);
+		
 		mav.addObject("userRelationship","<a href=\"/miniTweeter2/addFriend/" + username + "\">Add friend</a>");
 		if(username.equals(currentUser.getUsername())) {
 			mav.addObject("userRelationship", "This is your profile!");
@@ -29,7 +31,9 @@ public class UserController {
 				break;
 			}
 		}
-		User user = dbManager.getUser(username);
+		if(user == null) {
+			mav = new ModelAndView("noUser");
+		}
 		mav.addObject(user);
 		return mav;
 	}

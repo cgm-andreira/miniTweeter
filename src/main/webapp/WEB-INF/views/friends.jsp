@@ -35,13 +35,14 @@
 			</li>
 		</ul>
 		<br/>
+			
+			<h3>Friends: </h3>
+		 	<c:forEach items="${friends}" var="friend">
+				<div style="border: 1px solid green; margin: 20px 10px; padding-left: 15px">
+					<h4><a href="user/${friend.username}">${friend.name}</a></h4>
+		        </div>
+			</c:forEach>
 		
-		<h3>Friends: </h3>
-	 	<c:forEach items="${friends}" var="friend">
-			<div style="border: 1px solid green; margin: 20px 10px; padding-left: 15px">
-				<h4><a href="user/${friend.username}">${friend.name}</a></h4>
-	        </div>
-		</c:forEach>
 		
 	<% } %>
 

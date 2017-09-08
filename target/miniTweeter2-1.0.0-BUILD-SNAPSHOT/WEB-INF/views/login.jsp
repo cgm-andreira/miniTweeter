@@ -1,5 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page session="true" %>
 <html>
 <head>
@@ -9,8 +11,9 @@
 <h1>
 	Welcome to miniTweeter 
 </h1>
+<h3 style="background-color: pink">${message}</h3>
 <h3>Before you proceed, please login</h3>
- 	<form:form id="loginForm" modelAttribute="loginCredentials" action="loginProcess" method="post">
+ 	<form:form id="loginForm" modelAttribute="login" action="processLogin" method="post">
                 <table >
                     <tr>
                         <td>

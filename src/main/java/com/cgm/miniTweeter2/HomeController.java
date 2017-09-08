@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cgm.miniTweeter2.classes.DBManager;
-import com.cgm.miniTweeter2.classes.User;
+import com.cgm.miniTweeter2.logic.DBManager;
+import com.cgm.miniTweeter2.logic.User;
 
 @Controller
 public class HomeController {
@@ -39,9 +39,12 @@ public class HomeController {
 			mav = new ModelAndView("redirect:/");
 			return mav;
 		}
-		
-		mav = new ModelAndView("home");
-		currentUser.addMessage(message);
+		if(!message.equals("")) {
+			mav = new ModelAndView("home");
+			currentUser.addMessage(message);
+		} else {
+			mav = new ModelAndView("redirect:/");
+		}
 		
 		mav.getModel().put("messages", dbManager.getMessages(currentUser));
 		//System.out.println(dbManager.getMessages(currentUser));
