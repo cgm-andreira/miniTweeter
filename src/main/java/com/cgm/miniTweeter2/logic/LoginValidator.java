@@ -1,16 +1,19 @@
 package com.cgm.miniTweeter2.logic;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cgm.miniTweeter2.contract.LoginValidatorInterface;
+import com.cgm.miniTweeter2.contract.UserDataStore;
+import com.cgm.miniTweeter2.dbObjects.User;
+
 @Service
-public class LoginValidator {
-	@Autowired DBManager dbManager;
-	public User validateUser(Login login) {
+public class LoginValidator implements LoginValidatorInterface{
+	public User validateLogin(Login login, UserDataStore userStore) {
 		if(login == null) {
 			return null;
 		}
-		User requestedUsername = dbManager.getUser(login.getUsername());
+		User requestedUsername = userStore.getUserByUsername(login.getUsername());
 		if(requestedUsername == null) {
 			return null;
 		}

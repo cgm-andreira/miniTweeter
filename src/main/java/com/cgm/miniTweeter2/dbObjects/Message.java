@@ -12,9 +12,6 @@ import javax.persistence.Table;
 
 //import org.hibernate.annotations.Entity;
 
-
-
-
 @Entity
 @Table(name="messages")
 public class Message implements Serializable {
@@ -22,10 +19,11 @@ public class Message implements Serializable {
 	private static final long serialVersionUID = -2941181636782789264L;
 	
 	@Id
-	//@Column(name="id")
+	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	//@SequenceGenerator(name = "messages_id_seq", sequenceName = "sbs_albums_id_seq", allocationSize = 1)
 	private long id;
+	
 	@Column(name="user_id")
 	private long userId;
 	
