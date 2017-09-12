@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cgm.miniTweeter2.DTO.UserDTO;
 import com.cgm.miniTweeter2.contract.CommonDataStore;
 import com.cgm.miniTweeter2.contract.LoginValidatorInterface;
-import com.cgm.miniTweeter2.contract.MessageDataStore;
-import com.cgm.miniTweeter2.contract.UserDataStore;
+//import com.cgm.miniTweeter2.contract.MessageDataStore;
+//import com.cgm.miniTweeter2.contract.UserDataStore;
 import com.cgm.miniTweeter2.logic.DBManager;
 import com.cgm.miniTweeter2.logic.Login;
 //import com.cgm.miniTweeter2.logic.LoginValidator;
-import com.cgm.miniTweeter2.dbObjects.User;
+//import com.cgm.miniTweeter2.dbObjects.User;
 
 @Controller
 public class LoginController {
@@ -36,21 +37,20 @@ public class LoginController {
 	@RequestMapping(value = "/processLogin", method = RequestMethod.POST)
 	public ModelAndView processLogin(HttpServletRequest req, @ModelAttribute("login") Login login) {
 		ModelAndView mav = null;
-		User user = loginValidator.validateLogin(login, dataStore);
+		UserDTO user = loginValidator.validateLogin(login);
 		if(user != null) {
 			mav = new ModelAndView("home");
 			
 			req.getSession().setAttribute("userName", user.getName());
 			req.getSession().setAttribute("userLinkAddress", user.getUsername());
 			req.getSession().setAttribute("user", user);
-			
 			mav.addObject("userName", user.getName());
 			mav.addObject("messages", dataStore.getUserAndFriendsMessages(user));
-			
 		} else {
 			String message = "Username or password error, please try again!";
 			mav = new ModelAndView("login");
 			mav.addObject("message", message);
+			System.out.println("10");
 		}
 		return mav;
 	}

@@ -1,6 +1,5 @@
 package com.cgm.miniTweeter2.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -22,18 +21,18 @@ public class MessageDAO extends AbstractDAO<Message> {
 	
 	@Transactional
 	public List<Message> getMessagesByUserId(int id){
-		List<Message> output = new ArrayList<Message>();
+		List<Message> output;
 		
 		CriteriaBuilder cb = em().getCriteriaBuilder();
 		CriteriaQuery<Message> cq = cb.createQuery(Message.class);
 		
 		Root<Message> root = cq.from(Message.class);
 		cq.select(root);
-		cq.where(cb.equal(root.get("user_id"), id));
+		cq.where(cb.equal(root.get("user"), id));
 		TypedQuery<Message> q = em().createQuery(cq);
 		output = q.getResultList();
-		
+//		System.out.println("UID " + id);
+//		System.out.println(output.size());
 		return output;
 	}
-	
 }

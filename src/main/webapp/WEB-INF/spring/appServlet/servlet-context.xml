@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -22,7 +24,35 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.cgm.miniTweeter2 com.cgm.miniTweeter2.restController" />
+	<beans:bean id='dataSource'
+		  class='org.springframework.jdbc.datasource.DriverManagerDataSource'>
+		<beans:property name='driverClassName' value='org.postgresql.Driver' />
+		<beans:property name='url' value='jdbc:postgresql://localhost:5433/mini_tweeter' />
+		<beans:property name='username' value='miniTweeter' />
+		<beans:property name='password' value='admin' />
+	</beans:bean>
 	
+	<!-- Defines the entity manager factory -->
+	<beans:bean id='entityManagerFactory'
+		class='org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean'>
+		<beans:property name="persistenceUnitName" value="miniTweeter-jpa" />
+		<beans:property name='dataSource' ref='dataSource' />
+		<beans:property name="jpaVendorAdapter">
+			<beans:bean id="jpaAdapter"
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<beans:property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />
+				<beans:property name="generateDdl" value="true" />
+				<beans:property name="showSql" value="false" />
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<!--  -->
+	<beans:bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<beans:property name="entityManagerFactory" ref="entityManagerFactory" />
+	</beans:bean>
+ 
+	<tx:annotation-driven />
 	
 	
 </beans:beans>

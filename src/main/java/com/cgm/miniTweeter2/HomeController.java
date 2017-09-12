@@ -12,20 +12,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cgm.miniTweeter2.logic.DBManager;
-import com.cgm.miniTweeter2.logic.User;
+import com.cgm.miniTweeter2.DTO.MessageDTO;
+import com.cgm.miniTweeter2.DTO.UserDTO;
+import com.cgm.miniTweeter2.contract.CommonDataStore;
+//import com.cgm.miniTweeter2.dbObjects.Message;
+//import com.cgm.miniTweeter2.logic.DBManager;
+//import com.cgm.miniTweeter2.dbObjects.User;
 
 @Controller
 public class HomeController {
-	@Autowired DBManager dbManager;
+	@Autowired CommonDataStore dbManager;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest req, Locale locale, Model model) {
 		ModelAndView mav = new ModelAndView("home");
-		User currentUser = (User) req.getSession().getAttribute("user");
+		UserDTO currentUser = (UserDTO) req.getSession().getAttribute("user");
 		if(currentUser != null) {
 			mav.addObject("userName", currentUser.getName());
-			mav.addObject("messages", dbManager.getMessages(currentUser));
+			mav.addObject("messages", dbManager.getUserAndFriendsMessages(currentUser));
 		}
 		return mav;
 	}
@@ -33,7 +37,7 @@ public class HomeController {
 	@RequestMapping(value = "/postMessage", method = RequestMethod.POST)
 	public ModelAndView postMessage(HttpServletRequest req, @ModelAttribute("message") String message) {
 		ModelAndView mav;
-		User currentUser = (User) req.getSession().getAttribute("user");
+		UserDTO currentUser = (UserDTO) req.getSession().getAttribute("user");
 		
 		if (currentUser == null) {
 			mav = new ModelAndView("redirect:/");
@@ -41,12 +45,15 @@ public class HomeController {
 		}
 		if(!message.equals("")) {
 			mav = new ModelAndView("home");
-			currentUser.addMessage(message);
+			MessageDTO newMessage = new MessageDTO();
+			newMessage.setMessage(message);
+			newMessage.setUser(currentUser);
+			dbManager.addMessage(newMessage);
 		} else {
 			mav = new ModelAndView("redirect:/");
 		}
 		
-		mav.getModel().put("messages", dbManager.getMessages(currentUser));
+		mav.getModel().put("messages", dbManager.getUserAndFriendsMessages(currentUser));
 		//System.out.println(dbManager.getMessages(currentUser));
 		return mav;
 	}
