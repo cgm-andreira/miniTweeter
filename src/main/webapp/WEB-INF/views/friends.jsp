@@ -6,9 +6,10 @@
 <html>
 <head>
 	<title>${user.name}</title>
+	
 </head>
 <body>
-	<% String user = (String) request.getSession().getAttribute("userName"); %>
+	<% String user = (String) request.getSession().getAttribute("name"); %>
 	<% if(user == null || user == ""){ %>
 		<h1>Hello, to see and post messages, please <a href = "login">login</a>!</h1>  
 	<% } else { %>
@@ -35,7 +36,26 @@
 			</li>
 		</ul>
 		<br/>
-			
+		
+		<h3></h3>
+		
+		<table >
+		     <tr>
+		         <td>
+		             <label path="keyword">Search users: </label>
+		         </td>
+		         <td>
+		             <input path="keyword" name="keyword" id="keyword" />
+		         </td>
+		     </tr>
+		     <tr>
+		         <td></td>
+		         <td align="left">
+		             <button id="get" name="get" onclick="searchUser()">Search</button>
+		         </td>
+		     </tr>
+	 	</table>
+	 		
 			<h3>Friends: </h3>
 		 	<c:forEach items="${friends}" var="friend">
 				<div style="border: 1px solid green; margin: 20px 10px; padding-left: 15px">
@@ -45,7 +65,14 @@
 		
 		
 	<% } %>
-
+	
+	<script type="text/javascript">
+		function searchUser(){
+			console.log("A button has been pressed!");
+			var keyword = document.getElementById("keyword").value;
+			window.location.replace("/miniTweeter2/findUser/" + keyword);
+		}
+	</script>
 	
 </body>
 </html>

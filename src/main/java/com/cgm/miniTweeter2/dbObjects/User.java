@@ -54,8 +54,12 @@ public class User {
 	}
 
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name = "friends", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"))
+	@JoinTable(name = "friends", joinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) }, inverseJoinColumns = {
+			@JoinColumn(name = "friend_id", referencedColumnName = "id", nullable = false) })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<User> friends;
 
 	// @JsonIgnore
@@ -132,6 +136,10 @@ public class User {
 		for (User friend : friends) {
 			friendsDTO.add(friend.asDTOnoReference());
 		}
+		
+		output.setMessages(messagesDTO);
+		output.setFriends(friendsDTO);
+		
 		return output;
 	}
 

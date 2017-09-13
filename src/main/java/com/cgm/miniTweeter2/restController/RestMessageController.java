@@ -12,46 +12,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cgm.miniTweeter2.logic.DBManager;
-import com.cgm.miniTweeter2.logic.Message;
-import com.cgm.miniTweeter2.logic.User;
+import com.cgm.miniTweeter2.DTO.MessageDTO;
+import com.cgm.miniTweeter2.DTO.UserDTO;
+import com.cgm.miniTweeter2.contract.CommonDataStore;
 
 @RestController
 public class RestMessageController {
 	@Autowired
-	private DBManager dbManager;
+	private CommonDataStore dataStore;
 	
 	@RequestMapping(value = "/message", method = RequestMethod.PUT, consumes = "application/json")
 	public String postMessage(String message, HttpServletRequest req) {
 		String status = "failed";
 		
-		User currentUser = (User) req.getSession().getAttribute("user"); 
+		UserDTO currentUser = (UserDTO) req.getSession().getAttribute("user");
+		
 		if(currentUser != null) {
-			currentUser.addMessage(message);
+			MessageDTO newMessage = new MessageDTO();
+			
+			newMessage.setMessage(message);
+			newMessage.setUser(currentUser);
+			
+			dataStore.addMessage(newMessage);
 		}
 		
 		return status;
 	}
 	
 	@RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<Message> getAllMessages(HttpServletRequest req){
-		List<Message> output = new ArrayList<Message>();
+	public @ResponseBody List<MessageDTO> getAllMessages(HttpServletRequest req){
+		List<MessageDTO> output = new ArrayList<MessageDTO>();
 		
-		User currentUser = (User) req.getSession().getAttribute("user"); 
+		UserDTO currentUser = (UserDTO) req.getSession().getAttribute("user"); 
 		if(currentUser != null) {
-			output.addAll(dbManager.getMessages(currentUser));
+			output.addAll(dataStore.getUserMessages(currentUser));
 		}
 		
 		return output;
 	}
 	
 	@RequestMapping(value = "/message/{username}", method = RequestMethod.GET, produces = "application/json")
-	public List<Message> getMessages(@PathVariable String username, HttpServletRequest req){
-		List<Message> output = new ArrayList<Message>();
+	public @ResponseBody List<MessageDTO> getMessages(@PathVariable String username, HttpServletRequest req){
+		List<MessageDTO> output = new ArrayList<MessageDTO>();
 		
-		User currentUser = (User) req.getSession().getAttribute("user"); 
+		UserDTO currentUser = dataStore.getUserByUsername((String)req.getSession().getAttribute("username"));
 		if(currentUser != null) {
-			output.addAll(dbManager.getUserMessages(username));
+			output.addAll(dataStore.getUserMessages(currentUser));
 		}
 		
 		return output;

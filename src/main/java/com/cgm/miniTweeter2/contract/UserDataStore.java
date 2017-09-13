@@ -13,4 +13,5 @@ public interface UserDataStore {
 	UserDTO getUserByUsername(String username);
 	List<UserDTO> findUsersByName(String name);
 	List<UserDTO> findUsersByUsername(String username);
+	List<UserDTO> findUsersByKeyword(String keyword);
 }

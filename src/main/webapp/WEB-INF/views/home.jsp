@@ -9,12 +9,12 @@
 </head>
 <body>
 	<% 
-		String user = (String) request.getSession().getAttribute("userName");
+		String user = (String) request.getSession().getAttribute("name");
 	%>
 	<% if(user == null || user == ""){ %>
 		<h1>Hello, to see and post messages, please <a href = "login">login</a>!</h1>  
 	<% } else { %>
-		<h1>Hello, ${userName}!</h1>
+		<h1>Hello, ${name}!</h1>
 		
 		<ul style="list-style: none; display: block">
 			<li style="float:left; display: inline-block">
@@ -40,7 +40,7 @@
 		</ul>
 		<br/>
 		
-		<form:form id="newMessageForm" modelAttribute="message" action="postMessage" method="post">
+		<form:form id="newMessageForm" modelAttribute="message" action="postMessage" method="post" style="display:block">
 		<table >
 		     <tr>
 		         <td>

@@ -71,29 +71,51 @@ public class DataStore implements CommonDataStore {
 
 	@Override
 	public UserDTO getUserByUsername(String username) {
-		return userDAO.getUserByUsername(username).asDTOnoReference();
+		User user = userDAO.getUserByUsername(username);
+		if (user != null) {
+			return user.asDTO();
+		}
+		return null;
 	}
 
 	@Override
 	public List<UserDTO> findUsersByName(String name) {
-
-		return null;
+		List<UserDTO> foundUsers = new ArrayList<UserDTO>();
+		List<User> daoSearchResults = userDAO.findUserByName(name);
+		for (User user : daoSearchResults) {
+			foundUsers.add(user.asDTOnoReference());
+		}
+		return foundUsers;
 	}
 
 	@Override
 	public List<UserDTO> findUsersByUsername(String username) {
-		// to do
-		return null;
+		List<UserDTO> foundUsers = new ArrayList<UserDTO>();
+		List<User> daoSearchResults = userDAO.findUserByUsername(username);
+		for (User user : daoSearchResults) {
+			foundUsers.add(user.asDTOnoReference());
+		}
+		return foundUsers;
 	}
 
 	@Override
 	public void addFriend(UserDTO user, UserDTO friend) {
-		userDAO.getUserByUsername(user.getUsername()).addFriend(userDAO.getUserByUsername(friend.getUsername()));
+		User currentUser = userDAO.getUserByUsername(user.getUsername());
+		User currentUserFriend = userDAO.getUserByUsername(friend.getUsername());
+		if (currentUser != null && currentUserFriend != null) {
+			currentUser.addFriend(currentUserFriend);
+			userDAO.update(currentUser);
+		}
 	}
 
 	@Override
 	public void removeFriend(UserDTO user, UserDTO friend) {
-		userDAO.getUserByUsername(user.getUsername()).removeFriend(userDAO.getUserByUsername(friend.getUsername()));
+		User currentUser = userDAO.getUserByUsername(user.getUsername());
+		User currentUserFriend = userDAO.getUserByUsername(friend.getUsername());
+		if (currentUser != null && currentUserFriend != null) {
+			currentUser.removeFriend(currentUserFriend);
+			userDAO.update(currentUser);
+		}
 	}
 
 	@Override
@@ -107,8 +129,7 @@ public class DataStore implements CommonDataStore {
 		messages.addAll(getUserMessages(user));
 
 		for (UserDTO friend : getUserFriends(user)) {
-			for (Message message : messageDAO
-					.getMessagesByUserId(userDAO.getUserByUsername(friend.getUsername()).getId())) {
+			for (Message message : messageDAO.getMessagesByUserId(userDAO.getUserByUsername(friend.getUsername()).getId())) {
 				messages.add(message.asDTOnoReference());
 			}
 		}
@@ -126,6 +147,17 @@ public class DataStore implements CommonDataStore {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public List<UserDTO> findUsersByKeyword(String keyword) {
+		List<UserDTO> results = new ArrayList<UserDTO>();
+		
+		for(User user : userDAO.findUserByKeyword(keyword)) {
+			results.add(user.asDTOnoReference());
+		}
+		
+		return results;
 	}
 
 }

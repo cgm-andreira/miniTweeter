@@ -8,7 +8,7 @@
 	<title>${user.name}</title>
 </head>
 <body>
-	<% String user = (String) request.getSession().getAttribute("userName"); %>
+	<% String user = (String) request.getSession().getAttribute("name"); %>
 	<% if(user == null || user == ""){ %>
 		<h1>Hello, to see and post messages, please <a href = "login">login</a>!</h1>  
 	<% } else { %>
@@ -19,17 +19,17 @@
 				</a>
 			</li>
 			<li style="float:left; display: inline-block">
-				<a href="friends" style="display: inline-block; padding: 5px; background-color: #F0F0F0">
+				<a href="/miniTweeter2/friends" style="display: inline-block; padding: 5px; background-color: #F0F0F0">
 					Friends
 				</a>
 			</li>
 			<li style="float:left; display: inline-block">
-				<a href="user/<%= (String) request.getSession().getAttribute("userLinkAddress") %>" style="display: inline-block; padding: 5px; background-color: #F0F0F0">
+				<a href="/miniTweeter2/user/<%= (String) request.getSession().getAttribute("userLinkAddress") %>" style="display: inline-block; padding: 5px; background-color: #F0F0F0">
 					About
 				</a>
 			</li>
 			<li style="float:left; display: inline-block">
-				<a href="logout" style="display: inline-block; padding: 5px; background-color: #F0F0F0">
+				<a href="/miniTweeter2/logout" style="display: inline-block; padding: 5px; background-color: #F0F0F0">
 					Logout
 				</a>
 			</li>

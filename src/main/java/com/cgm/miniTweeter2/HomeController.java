@@ -21,15 +21,15 @@ import com.cgm.miniTweeter2.contract.CommonDataStore;
 
 @Controller
 public class HomeController {
-	@Autowired CommonDataStore dbManager;
+	@Autowired CommonDataStore dataStore;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest req, Locale locale, Model model) {
 		ModelAndView mav = new ModelAndView("home");
-		UserDTO currentUser = (UserDTO) req.getSession().getAttribute("user");
+		UserDTO currentUser = dataStore.getUserByUsername((String)req.getSession().getAttribute("username"));
 		if(currentUser != null) {
-			mav.addObject("userName", currentUser.getName());
-			mav.addObject("messages", dbManager.getUserAndFriendsMessages(currentUser));
+			mav.addObject("name", currentUser.getName());
+			mav.addObject("messages", dataStore.getUserAndFriendsMessages(currentUser));
 		}
 		return mav;
 	}
@@ -37,7 +37,7 @@ public class HomeController {
 	@RequestMapping(value = "/postMessage", method = RequestMethod.POST)
 	public ModelAndView postMessage(HttpServletRequest req, @ModelAttribute("message") String message) {
 		ModelAndView mav;
-		UserDTO currentUser = (UserDTO) req.getSession().getAttribute("user");
+		UserDTO currentUser = dataStore.getUserByUsername((String)req.getSession().getAttribute("username"));
 		
 		if (currentUser == null) {
 			mav = new ModelAndView("redirect:/");
@@ -48,12 +48,12 @@ public class HomeController {
 			MessageDTO newMessage = new MessageDTO();
 			newMessage.setMessage(message);
 			newMessage.setUser(currentUser);
-			dbManager.addMessage(newMessage);
+			dataStore.addMessage(newMessage);
 		} else {
 			mav = new ModelAndView("redirect:/");
 		}
 		
-		mav.getModel().put("messages", dbManager.getUserAndFriendsMessages(currentUser));
+		mav.getModel().put("messages", dataStore.getUserAndFriendsMessages(currentUser));
 		//System.out.println(dbManager.getMessages(currentUser));
 		return mav;
 	}

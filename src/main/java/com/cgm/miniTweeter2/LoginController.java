@@ -15,7 +15,6 @@ import com.cgm.miniTweeter2.contract.CommonDataStore;
 import com.cgm.miniTweeter2.contract.LoginValidatorInterface;
 //import com.cgm.miniTweeter2.contract.MessageDataStore;
 //import com.cgm.miniTweeter2.contract.UserDataStore;
-import com.cgm.miniTweeter2.logic.DBManager;
 import com.cgm.miniTweeter2.logic.Login;
 //import com.cgm.miniTweeter2.logic.LoginValidator;
 //import com.cgm.miniTweeter2.dbObjects.User;
@@ -23,7 +22,6 @@ import com.cgm.miniTweeter2.logic.Login;
 @Controller
 public class LoginController {
 	@Autowired HttpSession httpSession;
-	@Autowired DBManager dbManager;
 	@Autowired LoginValidatorInterface loginValidator;
 	
 	@Autowired 
@@ -39,11 +37,13 @@ public class LoginController {
 		ModelAndView mav = null;
 		UserDTO user = loginValidator.validateLogin(login);
 		if(user != null) {
-			mav = new ModelAndView("home");
 			
-			req.getSession().setAttribute("userName", user.getName());
+			req.getSession().setAttribute("name", user.getName());
+			req.getSession().setAttribute("username", user.getUsername());
 			req.getSession().setAttribute("userLinkAddress", user.getUsername());
-			req.getSession().setAttribute("user", user);
+			
+			mav = new ModelAndView("redirect:/");
+			
 			mav.addObject("userName", user.getName());
 			mav.addObject("messages", dataStore.getUserAndFriendsMessages(user));
 		} else {
@@ -56,8 +56,8 @@ public class LoginController {
 	}
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest req) {
-		req.getSession().setAttribute("user", null);
-		req.getSession().setAttribute("userName", null);
+		req.getSession().setAttribute("name", null);
+		req.getSession().setAttribute("username", null);
 		req.getSession().setAttribute("userLinkAddress", null);
 		req.getSession().invalidate();
 		return "redirect:/";
